@@ -8,6 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.example.movieshala.Adapters.MovieAdapter;
+import com.example.movieshala.Utility.MovieUtils;
+import com.example.movieshala.objects.MovieDetail;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         asyncTask=new IamAsyncTask();
         asyncTask.execute("https://api.themoviedb.org/3/movie/popular?api_key=daa28366515d4284fea776b7e1ea6050");
-
-
-
 
     }
 

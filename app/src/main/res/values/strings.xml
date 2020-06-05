@@ -3,4 +3,12 @@
     <string name="todo">TODO</string>
     <string name="movie_name">MOVIE NAME</string>
     <string name="rating">Rating:</string>
+    <string name="release">Release Date:</string>
+    <string name="rate">Rating:</string>
+    <string name="out">/5</string>
+    <string name="deadpool_2">Deadpool 2</string>
+    <string name="rating_7_2">Rating:7.2</string>
+    <string name="release_date_2008_07_16">Release Date: 2008–07–16</string>
+    <string name="overview">OverView</string>
+    <string name="batman_raises_the_stakes_in_his_war_on_crime_with_the_help_of_lt_jim_gordon_and_district_attorney_harvey_dent_batman_sets_out_to_dismantle_the_remaining_criminal_organizations_that_plague_the_streets_the_partnership_proves_to_be_effective_but_they_soon_find_themselves_prey_to_a_reign_of_chaos_unleashed_by_a_rising_criminal_mastermind_known_to_the_terrified_citizens_of_gotham_as_the_joker">Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.</string>
 </resources>

@@ -21,21 +21,21 @@
             android:src="@color/colorPrimary"
             android:contentDescription="@string/todo" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
-            android:background="@color/secondary">
-            <TextView
-                android:id="@+id/movie_tittle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginStart="6dp"
-                android:text="@string/movie_name"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true"
+                android:background="@color/secondary">
+                <TextView
+                    android:id="@+id/movie_tittle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/movie_name"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
             <TextView
                 android:id="@+id/rate"
                 android:layout_width="wrap_content"

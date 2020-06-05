@@ -1,6 +1,8 @@
-package com.example.movieshala;
+package com.example.movieshala.Utility;
 
 import android.util.Log;
+
+import com.example.movieshala.objects.MovieDetail;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,10 +15,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-class MovieUtils {
+public class MovieUtils {
 
     private static String LOG_ERROR = "MovieUtilsClass-Error";
     private static String LOG_OUTPUT = "MovieUtilsClass-Output";
@@ -88,7 +90,7 @@ class MovieUtils {
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             BufferedReader reader = new BufferedReader(inputStreamReader);
             String line = reader.readLine();
             while (line != null) {
@@ -112,8 +114,10 @@ class MovieUtils {
                 String overview=jsonObject.getString("overview");
                 Double rating=(jsonObject.getDouble("vote_average"))/2;
                 String image=jsonObject.getString("poster_path");
+                String backImage=jsonObject.getString("backdrop_path");
+                String id = jsonObject.getString("id");
 
-                MovieDetail movieDetails=new MovieDetail(title,date,rating,overview,image);
+                MovieDetail movieDetails = new MovieDetail(title, date, rating, overview, image, id,backImage);
                 arrayList.add(movieDetails);
 
                 Log.i(LOG_OUTPUT,title);

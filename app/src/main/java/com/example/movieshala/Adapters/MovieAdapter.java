@@ -1,5 +1,7 @@
-package com.example.movieshala;
+package com.example.movieshala.Adapters;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.example.movieshala.Movie_Detail_Activity;
+import com.example.movieshala.objects.MovieDetail;
+import com.example.movieshala.R;
 import com.squareup.picasso.Picasso;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -35,13 +41,29 @@ public class MovieAdapter  extends RecyclerView.Adapter<MovieAdapter.MyViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         holder.title.setText(mMovieDetailsList.get(position).getMovieTitle());
         holder.rating.setRating(mMovieDetailsList.get(position).getMovieRatings().floatValue());
-        String link="http://image.tmdb.org/t/p/w185/"+mMovieDetailsList.get(position).getMovieImage();
-
-        Picasso.get().load(link).into(holder.imageView);
+        final String link="http://image.tmdb.org/t/p/w185/"+mMovieDetailsList.get(position).getMovieImage();
+        final String backLink="http://image.tmdb.org/t/p/w185/"+mMovieDetailsList.get(position).getBackimage();
+        Picasso.get().load(link).placeholder(R.drawable.load5).into(holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(mContext, Movie_Detail_Activity.class);
+                MovieDetail movieDetails=mMovieDetailsList.get(position);
+                intent.putExtra("title", movieDetails.getMovieTitle());
+                Bundle b = new Bundle();
+                b.putDouble("key", movieDetails.getMovieRatings());
+                intent.putExtras(b);
+                intent.putExtra("overview", movieDetails.getMovieSynopsis());
+                intent.putExtra("date", movieDetails.getMovieDate());
+                intent.putExtra("image", backLink);
+                intent.putExtra("id", movieDetails.getMovieId());
+                mContext.startActivity(intent);
+            }
+        });
 
         Log.i("RecyclerView-output",link);
 
