@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/secondary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="Author"
+        android:textSize="35sp"/>
+            <ru.embersoft.expandabletextview.ExpandableTextView
+                android:id="@+id/author_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:etv_animationTime="20"
+                app:etv_expandLines="3"
+                app:etv_textContentSize="18sp"
+                app:etv_textExpand="Read More"
+                app:etv_textShrink="Read Less"
+                app:etv_textContentColor="@android:color/white" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

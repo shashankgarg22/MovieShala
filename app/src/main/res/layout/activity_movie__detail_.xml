@@ -46,8 +46,7 @@
             android:gravity="bottom"
             android:text="@string/release_date_2008_07_16"
             android:textColor="#6F6D67"
-            android:textSize="12sp"
-            tools:ignore="RelativeOverlap" />
+            android:textSize="12sp" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -85,6 +84,80 @@
         android:text="@string/batman_raises_the_stakes_in_his_war_on_crime_with_the_help_of_lt_jim_gordon_and_district_attorney_harvey_dent_batman_sets_out_to_dismantle_the_remaining_criminal_organizations_that_plague_the_streets_the_partnership_proves_to_be_effective_but_they_soon_find_themselves_prey_to_a_reign_of_chaos_unleashed_by_a_rising_criminal_mastermind_known_to_the_terrified_citizens_of_gotham_as_the_joker"
         android:textColor="#6F6D67"
         android:textSize="20sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp"
+            android:text="Trailers"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/white" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/trailer_load_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/load5"
+        android:layout_gravity="center"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trailer_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp"
+            android:text="Reviews"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/white" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/review_load_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/load5"
+        android:layout_gravity="center"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reviews_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
 </LinearLayout>
 </ScrollView>

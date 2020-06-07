@@ -1,28 +1,81 @@
 package com.example.movieshala;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.movieshala.Adapters.ReviewsAdapter;
+import com.example.movieshala.Adapters.TrailerAdapter;
+import com.example.movieshala.Utility.MovieUtils;
+import com.example.movieshala.objects.Reviews;
 import com.squareup.picasso.Picasso;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Movie_Detail_Activity extends AppCompatActivity {
     String mid;
     String title;
     String overView;
     String date;
+    RecyclerView videoRecyclerView;
+    TrailerAdapter movieVideoAdapter;
+    RecyclerView reviewRecyclerView;
+    ReviewsAdapter movieReviewAdapter;
+    ImageView reviewLoadImage;
+    ImageView videoLoadImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie__detail_);
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         updateDetails(intent);
+        updateVideo();
+        updateReviews();
+
+        reviewLoadImage = findViewById(R.id.review_load_image);
+        videoLoadImage = findViewById(R.id.trailer_load_image);
+        reviewLoadImage.setVisibility(View.VISIBLE);
+        videoLoadImage.setVisibility(View.VISIBLE);
+
+        Picasso.get().load(R.drawable.load5).into(reviewLoadImage);
+        Picasso.get().load(R.drawable.load5).into(videoLoadImage);
+
+        trailerAsynctask trailerAsynctask = new trailerAsynctask();
+        trailerAsynctask.execute(getVideoApiLink(mid));
+
+        MovieReviewAsyncTask asyncTaskReview = new MovieReviewAsyncTask();
+        asyncTaskReview.execute(getReviewApiLink(mid));
+
+    }
+
+    private void updateVideo() {
+        ArrayList<String> arrayList = new ArrayList<>();
+        videoRecyclerView = findViewById(R.id.trailer_recycler_view);
+        videoRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        movieVideoAdapter = new TrailerAdapter(arrayList, this);
+        videoRecyclerView.setAdapter(movieVideoAdapter);
+    }
+
+    private void updateReviews() {
+        ArrayList<Reviews> movieReviewArrayList = new ArrayList<>();
+        reviewRecyclerView = findViewById(R.id.reviews_recycler_view);
+        reviewRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        movieReviewAdapter = new ReviewsAdapter(Movie_Detail_Activity.this, movieReviewArrayList);
+        reviewRecyclerView.setAdapter(movieVideoAdapter);
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -32,7 +85,6 @@ public class Movie_Detail_Activity extends AppCompatActivity {
         date = intent.getStringExtra("date");
         Bundle b = getIntent().getExtras();
         double rating = b.getDouble("key");
-        //rating=intent.getDoubleExtra(String.valueOf(rating),0);
         String image = intent.getStringExtra("image");
         String id = intent.getStringExtra("id");
         mid = id;
@@ -51,9 +103,85 @@ public class Movie_Detail_Activity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.image);
         titleTextView.setText(title);
         dateTextView.setText(getString(R.string.release) + date);
-        ratingTextView.setText(getString(R.string.rate) + rating+ getString(R.string.out));
+        ratingTextView.setText(getString(R.string.rate) + rating + getString(R.string.out));
         overViewTextView.setText(overView);
 
         Picasso.get().load(image).placeholder(R.drawable.load5).into(imageView);
+    }
+
+    //Creates VideoApi link from id
+    private String getVideoApiLink(String id) {
+        String videoLink = "https://api.themoviedb.org/3/movie/" + id + "/videos?api_key=8f067240d8717f510b4c79abe9f714b7&language=en-US";
+        return videoLink;
+    }
+
+    //Creates ReviewApi link from id
+    private String getReviewApiLink(String id) {
+        String reviewLink = "https://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=8f067240d8717f510b4c79abe9f714b7&language=en-US";
+        return reviewLink;
+    }
+
+    public class trailerAsynctask extends AsyncTask<String, Void, ArrayList<String>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (videoRecyclerView.getVisibility() == View.VISIBLE) {
+                videoRecyclerView.setVisibility(View.GONE);
+            }
+            videoLoadImage.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            super.onPostExecute(strings);
+            movieVideoAdapter = new TrailerAdapter(strings, Movie_Detail_Activity.this);
+            videoRecyclerView.setAdapter(movieVideoAdapter);
+
+            if (videoRecyclerView.getVisibility() == View.GONE) {
+                videoRecyclerView.setVisibility(View.VISIBLE);
+            }
+            videoLoadImage.setVisibility(View.GONE);
+
+        }
+
+        @Override
+        protected ArrayList<String> doInBackground(String... strings) {
+            return MovieUtils.fetchMovieVideo(strings[0]);
+
+        }
+    }
+
+    public class MovieReviewAsyncTask extends AsyncTask<String, Void, ArrayList<Reviews>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            if (reviewRecyclerView.getVisibility() == View.VISIBLE) {
+                reviewRecyclerView.setVisibility(View.GONE);
+            }
+            reviewLoadImage.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected ArrayList<Reviews> doInBackground(String... strings) {
+
+            return MovieUtils.fetchReviewDetails(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Reviews> movieReviews) {
+            super.onPostExecute(movieReviews);
+
+            movieReviewAdapter = new ReviewsAdapter(Movie_Detail_Activity.this, movieReviews);
+            reviewRecyclerView.setAdapter(movieReviewAdapter);
+
+            if (reviewRecyclerView.getVisibility() == View.GONE) {
+                reviewRecyclerView.setVisibility(View.VISIBLE);
+                reviewLoadImage.setVisibility(View.GONE);
+
+            }
+        }
     }
 }
