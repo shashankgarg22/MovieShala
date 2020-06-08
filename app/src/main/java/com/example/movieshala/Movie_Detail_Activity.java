@@ -1,6 +1,8 @@
 package com.example.movieshala;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,27 +16,37 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.movieshala.Adapters.ReviewsAdapter;
 import com.example.movieshala.Adapters.TrailerAdapter;
+import com.example.movieshala.ArchitectureComponents.FavouriteViewModel;
 import com.example.movieshala.Utility.MovieUtils;
+import com.example.movieshala.objects.FavouriteDetails;
 import com.example.movieshala.objects.Reviews;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Movie_Detail_Activity extends AppCompatActivity {
     String mid;
     String title;
     String overView;
     String date;
+    double rating;
     RecyclerView videoRecyclerView;
     TrailerAdapter movieVideoAdapter;
     RecyclerView reviewRecyclerView;
     ReviewsAdapter movieReviewAdapter;
     ImageView reviewLoadImage;
     ImageView videoLoadImage;
+    FavouriteViewModel favouritesViewModel;
+    FavouriteDetails favouriteDetails;
+    int flag = 0;
+    List<FavouriteDetails> allFavouriteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +71,56 @@ public class Movie_Detail_Activity extends AppCompatActivity {
         MovieReviewAsyncTask asyncTaskReview = new MovieReviewAsyncTask();
         asyncTaskReview.execute(getReviewApiLink(mid));
 
+        FloatingActionButton favButton = findViewById(R.id.set_favourite);
+        favButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for (int i = 0; i < allFavouriteList.size(); i++) {
+                    if (allFavouriteList.get(i).getId() == Integer.parseInt(mid)) {
+                        flag = 1;
+                    }
+                }
+
+                if (flag == 0) {
+
+                    addToFavourite();
+                    flag = 1;
+                } else {
+                    flag = 0;
+                    deleteFromFavourite();
+                }
+
+            }
+        });
+
+        favouritesViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
+        favouritesViewModel.getAllFavourites().observe(this, new Observer<List<FavouriteDetails>>() {
+            @Override
+            public void onChanged(List<FavouriteDetails> favouriteDetails) {
+                allFavouriteList = favouriteDetails;
+
+
+            }
+        });
+
+
+    }
+    private void deleteFromFavourite() {
+        favouriteDetails = new FavouriteDetails(Integer.parseInt(mid), title, overView, date, rating);
+        favouritesViewModel.delete(favouriteDetails);
+        Toast.makeText(Movie_Detail_Activity.this, "Deleted from favourite", Toast.LENGTH_SHORT).show();
+
     }
 
+    private void addToFavourite() {
+
+
+        favouriteDetails = new FavouriteDetails(Integer.parseInt(mid), title, overView, date, rating);
+        favouritesViewModel.insert(favouriteDetails);
+        Toast.makeText(Movie_Detail_Activity.this, "Added to favourite", Toast.LENGTH_SHORT).show();
+
+    }
     private void updateVideo() {
         ArrayList<String> arrayList = new ArrayList<>();
         videoRecyclerView = findViewById(R.id.trailer_recycler_view);
@@ -84,7 +144,7 @@ public class Movie_Detail_Activity extends AppCompatActivity {
         overView = intent.getStringExtra("overview");
         date = intent.getStringExtra("date");
         Bundle b = getIntent().getExtras();
-        double rating = b.getDouble("key");
+        rating = b.getDouble("key");
         String image = intent.getStringExtra("image");
         String id = intent.getStringExtra("id");
         mid = id;

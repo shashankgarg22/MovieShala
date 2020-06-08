@@ -140,7 +140,7 @@ public class MovieUtils {
                 String title=jsonObject.getString("title");
                 String date=jsonObject.getString("release_date");
                 String overview=jsonObject.getString("overview");
-                Double rating=(jsonObject.getDouble("vote_average"))/2;
+                double rating=(jsonObject.getDouble("vote_average"))/2;
                 String image=jsonObject.getString("poster_path");
                 String backImage=jsonObject.getString("backdrop_path");
                 String id = jsonObject.getString("id");
